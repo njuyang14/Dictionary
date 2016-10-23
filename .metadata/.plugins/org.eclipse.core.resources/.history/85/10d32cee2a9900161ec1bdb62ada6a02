@@ -1,0 +1,17 @@
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class Main {
+	public static void main(String[] args){
+		JFrame frame = new UI();
+		//frame.setUndecorated(true); // 去掉窗口的装饰 
+		//frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);//采用指定的窗口装饰风格
+		frame.setTitle("My Dictionary");
+		frame.setSize(620, 580);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
