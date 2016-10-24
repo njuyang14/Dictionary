@@ -15,8 +15,8 @@ public class UI extends JFrame{
 	private JPanel p1 = new JPanel();//输入框
 	private JButton jbtSearch = new JButton("Search");
 	private JLabel jlb = new JLabel(" 单词 ");
-	private JTextField jtfInput = new JTextField(30);	
-	private JLabel display = new JLabel();	
+	private JTextArea jtfInput = new JTextArea(1,20);		
+	private JTextArea display = new JTextArea();
 	private JPanel p2 = new JPanel();//联想panel
 	private JList<String> list = new JList<String>();//联想
 	private JPanel p0 = new JPanel();//底层图片
@@ -44,6 +44,7 @@ public class UI extends JFrame{
 		
 		//设置顶部输入框
 		p1.setLayout(new FlowLayout(FlowLayout.LEFT,25,20));
+		jtfInput.setFont(new Font("Serif", 0, 25));
 		jlb.setFont(new Font("Serif", 0, 18));
 		jlb.setBorder(lineBorder);
 		jbtSearch.addActionListener(new SearchListener());//search button 
@@ -71,7 +72,9 @@ public class UI extends JFrame{
 		//中间显示框
 		display.setBorder(lineBorder);
 		display.setFont(new Font("Serif", 0, 30));
-		display.setVerticalAlignment(SwingConstants.TOP);
+		display.setLineWrap(true);
+		display.setOpaque(false);
+		display.setEditable(false);
 		p3.add(display,BorderLayout.CENTER);//
 				
 		//jlist mouse click event
@@ -81,7 +84,7 @@ public class UI extends JFrame{
                 if(arg0.getClickCount() == 2){
                 	String s1 = MyWord.getMeaning((Integer) (MyWord.currentList.get(list.locationToIndex(arg0.getPoint()))));
                 	String s2 = MyWord.getWord((Integer)MyWord.currentList.get(list.locationToIndex(arg0.getPoint())));
-                	display.setText("<html><body><p>"+s2+"</p><br><p>"+s1+"</p><body></html>");
+                	display.setText(s2+"\r\n"+s1);
                 }
             }
         });
@@ -96,7 +99,7 @@ public class UI extends JFrame{
 			// TODO 自动生成的方法存根
 			if(jtfInput.getText()!=""){
 			    int index = MyWord.binarySearchWord(jtfInput.getText());
-			    display.setText("<html><body><p>"+jtfInput.getText()+"</p><br><p>"+MyWord.getMeaning(index)+"</p><body></html>");
+			    display.setText(jtfInput.getText()+"\r\n"+MyWord.getMeaning(index));
 			}
 		}
 	}
@@ -110,7 +113,7 @@ public class UI extends JFrame{
 			if(list.getValueIsAdjusting()==false&&index!=-1){
 			    String s1 = MyWord.getMeaning((Integer) (MyWord.currentList.get(index)));
 			    String s2 = MyWord.getWord((Integer)MyWord.currentList.get(index));
-		        display.setText("<html><body><p>"+s2+"</p><br><p>"+s1+"</p><body></html>");
+		        display.setText(s2+"\r\n"+s1);
 			}
 		}
 	}

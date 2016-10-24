@@ -84,20 +84,21 @@ public class Dictionary {
 			    	search.add(wordList.get(i));
 			    	currentList.add(i);
 			    }
+			    /*else{
+			    	
+			    }*/
 			}
 		}
 		
 		if(currentList.size()==0){
 			//判断相似度，如果，则加入联想框
 			for(int i=0;i<len;i++){
-				if(Math.abs(prefix.length()-wordList.get(i).length())<2){
-				    int editdistance = editDistance(prefix, wordList.get(i));
-				    //System.out.println(editdistance);
-			        if(editdistance<=1){
-				        search.add(wordList.get(i));
-		    	        currentList.add(i);
-			        }
-				}
+				int editdistance = editDistance(prefix, wordList.get(i));
+				//System.out.println(editdistance);
+			    if(editdistance<=1){
+				    search.add(wordList.get(i));
+		    	    currentList.add(i);
+			    }
 			}
 		}
 				
