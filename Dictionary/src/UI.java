@@ -105,12 +105,11 @@ public class UI extends JFrame{
 
 		public void valueChanged(ListSelectionEvent arg0) {
 			// TODO 自动生成的方法存根
-			JList<String> tempList = (JList<String>)arg0.getSource();
-			int index = tempList.getSelectedIndex();
-			Object o = tempList.getModel().getElementAt(index);
-			if(o!=null){
-			    String s1 = MyWord.getMeaning((Integer) (MyWord.currentList.get(tempList.getSelectedIndex())));
-			    String s2 = MyWord.getWord((Integer)MyWord.currentList.get(tempList.getSelectedIndex()));
+			//JList<String> tempList = (JList<String>)arg0.getSource();
+			int index = list.getSelectedIndex();
+			if(list.getValueIsAdjusting()==false&&index!=-1){
+			    String s1 = MyWord.getMeaning((Integer) (MyWord.currentList.get(index)));
+			    String s2 = MyWord.getWord((Integer)MyWord.currentList.get(index));
 		        display.setText("<html><body><p>"+s2+"</p><br><p>"+s1+"</p><body></html>");
 			}
 		}
