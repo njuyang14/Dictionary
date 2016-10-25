@@ -35,11 +35,19 @@ public class Dictionary {
 	}
 	
 	public String getWord(int index){
-		return wordList.get(index);
+		if(index != -1){
+		    return wordList.get(index);
+		}
+		else{
+			return " ";
+		}
 	}
 	
 	public String getMeaning(int index){
-		return wordMeaning.get(index);
+		if(index != -1)
+		    return wordMeaning.get(index);
+		else
+			return " ";
 	}
 	
 	public String[] getWordList(){
@@ -60,15 +68,15 @@ public class Dictionary {
 		int low=0,high=len-1;
 		int mid;
 		while (low<=high){
-			mid = (low+high)/2;
-	         if(searchWord.compareTo(wordList.get(mid))==0)
-		             return mid;
-		         if(searchWord.compareTo(wordList.get(mid))<0)
-		             high=mid-1;
-		         if(searchWord.compareTo(wordList.get(mid))>0)
-		             low=mid+1;
-		     }
-		     return -1;
+		    mid = (low+high)/2;
+	        if(searchWord.compareTo(wordList.get(mid))==0)
+		        return mid;
+		    if(searchWord.compareTo(wordList.get(mid))<0)
+		        high=mid-1;
+		    if(searchWord.compareTo(wordList.get(mid))>0)
+		        low=mid+1;
+	    }
+		return -1;
 	}
 	
 	//找出前缀相同的单词以及相似度较大的单词（同时纠错）

@@ -11,11 +11,13 @@ import java.io.FileNotFoundException;
 
 public class UI extends JFrame{
 	private Dictionary MyWord = new Dictionary();
-	private ImageIcon icon = new ImageIcon("./src/background3.jpg");
+	private ImageIcon icon = new ImageIcon("./src/background.jpg");
+	private ImageIcon searchIcon = new ImageIcon("./src/search.png");
+	private ImageIcon wordIcon = new ImageIcon("./src/word.png");
 	private JPanel p1 = new JPanel();//输入框
 	private JButton jbtSearch = new JButton("Search");
-	private JLabel jlb = new JLabel(" 单词 ");
-	private JTextArea jtfInput = new JTextArea(1,20);		
+	private JLabel jlb = new JLabel(/*" 单词 "*/);
+	private JTextArea jtfInput = new JTextArea(1,22);		
 	private JTextArea display = new JTextArea();
 	private JPanel p2 = new JPanel();//联想panel
 	private JList<String> list = new JList<String>();//联想
@@ -46,8 +48,11 @@ public class UI extends JFrame{
 		p1.setLayout(new FlowLayout(FlowLayout.LEFT,25,20));
 		jtfInput.setFont(new Font("Serif", 0, 25));
 		jlb.setFont(new Font("Serif", 0, 18));
-		jlb.setBorder(lineBorder);
+		jlb.setIcon(wordIcon);
 		jbtSearch.addActionListener(new SearchListener());//search button 
+		jbtSearch.setIcon(searchIcon);
+		jbtSearch.setPreferredSize(new Dimension(100,32));
+		jbtSearch.setToolTipText("press it to search");
 		changeListWithInput();
 		p1.add(jlb);
 		p1.add(jtfInput);
@@ -60,7 +65,7 @@ public class UI extends JFrame{
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	
 		list.addListSelectionListener(new listSelectionListener());
 		JScrollPane listScroller = new JScrollPane(list);
-		listScroller.setPreferredSize(new Dimension(180,430));
+		listScroller.setPreferredSize(new Dimension(180,630));
 		list.setFont(new Font("Arial", Font.PLAIN, 19));
 		//设置联想框透明
 		listScroller.setOpaque(false);
@@ -99,7 +104,10 @@ public class UI extends JFrame{
 			// TODO 自动生成的方法存根
 			if(jtfInput.getText()!=""){
 			    int index = MyWord.binarySearchWord(jtfInput.getText());
-			    display.setText(jtfInput.getText()+"\r\n"+MyWord.getMeaning(index));
+			    if(index != -1)
+			        display.setText(jtfInput.getText()+"\r\n"+MyWord.getMeaning(index));
+			    else
+			    	display.setText("could not find this word, please input again.");
 			}
 		}
 	}
