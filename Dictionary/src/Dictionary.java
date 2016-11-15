@@ -2,16 +2,19 @@ import java.util.*;
 import java.io.*;
 
 public class Dictionary {
+	/*定义单词和词意的数据结构*/
 	private ArrayList<String> wordList = new ArrayList<String>();
 	private ArrayList<String> wordMeaning = new ArrayList<String>();
-	private int len;
+	private int len;//单词总长
 	
-	public ArrayList<Integer> currentList = new ArrayList<Integer>();//保存当前找到的联想的单词
+	/*保存当前list联想区的单词，以便之后查询*/
+	public ArrayList<Integer> currentList = new ArrayList<Integer>();
 	
+	/*创建字典构造方法*/
 	public Dictionary(){
 		Scanner input = null;
 		try{
-		    input = new Scanner(new File("./src/dictionary.txt"));}
+		    input = new Scanner(new File("./src/dictionary.txt"));}//字典保存目录改变时，需相应改变
 		catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
@@ -30,10 +33,12 @@ public class Dictionary {
 		}
 	}
 	
+	/*字典length的get方法*/
 	public int getSize(){
 		return len;
 	}
 	
+	/*从初始字典中查询*/
 	public String getWord(int index){
 		if(index != -1){
 		    return wordList.get(index);
@@ -43,6 +48,7 @@ public class Dictionary {
 		}
 	}
 	
+	/*从初始词意表中查询*/
 	public String getMeaning(int index){
 		if(index != -1)
 		    return wordMeaning.get(index);
@@ -50,13 +56,14 @@ public class Dictionary {
 			return " ";
 	}
 	
+	/*初始字典表的get方法*/
 	public String[] getWordList(){
 		String[] stockArr = new String[wordList.size()];
 		stockArr = wordList.toArray(stockArr);
 		return stockArr;
 	}
 	
-	//从数组中获得当前显示于jlist中的String[]
+	/*从数组中获得当前显示于jlist中的String[]*/
 	public String[] getAnListOfCurrentArray(int[] a){
 		String[] current = null;
 		for(int i=0;i<a.length;i++)
@@ -64,6 +71,7 @@ public class Dictionary {
 		return current;
 	}
 	
+	/*二分查找*/
 	public int binarySearchWord(String searchWord){
 		int low=0,high=len-1;
 		int mid;
@@ -79,11 +87,12 @@ public class Dictionary {
 		return -1;
 	}
 	
-	//找出前缀相同的单词以及相似度较大的单词（同时纠错）
+	/*联想功能实现，找出前缀相同的单词以及相似度较大的单词（同时纠错）*/
 	public String[] hasSamePrefix(String prefix){
 		currentList.clear();
 		ArrayList<String> search = new ArrayList<String>();
 		int prefixLen = prefix.length();
+		/*遍历数组，确定前缀相同的词，返回给currentList*/
 		for(int i = 0;i < len;i++){
 			//判断前缀是否相同
 			if(prefixLen <= wordList.get(i).length()){
@@ -95,9 +104,11 @@ public class Dictionary {
 			}
 		}
 		
+		/*如果当前list为空，即没有找到相应单词*/
 		if(currentList.size()==0){
-			//判断相似度，如果，则加入联想框
+			//遍历判断相似度，如果相似，则加入联想框
 			for(int i=0;i<len;i++){
+				/*先判断两者长度，相差超过1个距离，则不进行编辑距离计算*/
 				if(Math.abs(prefix.length()-wordList.get(i).length())<2){
 				    int editdistance = editDistance(prefix, wordList.get(i));
 				    //System.out.println(editdistance);
@@ -108,13 +119,15 @@ public class Dictionary {
 				}
 			}
 		}
-				
+		
+		/*ArrayList to String[]*/
 		String[] stockArr = new String[search.size()];
 		stockArr = search.toArray(stockArr);
 		return stockArr;
 	}
 	
-	//用编辑距离算法纠错
+	/*编辑距离算法，动态规划实现*/
+	
 	public int minOfThree(int a, int b, int c){
 		int temp1 = a > b ? b : a;
 		int temp2 = temp1 > c ? c : temp1;

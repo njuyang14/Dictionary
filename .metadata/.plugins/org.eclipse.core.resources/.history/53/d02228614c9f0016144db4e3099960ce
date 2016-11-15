@@ -22,86 +22,72 @@ public class UI extends JFrame{
 	private JTextArea jtfInput = new JTextArea(1,22);//输入栏	
 	/*定义显示框*/
 	private JTextArea display = new JTextArea();
-	/*定义联想区面板listScroller*/
+	/*定义联想区面板p2*/
+	private JPanel p2 = new JPanel();//联想panel
 	private JList<String> list = new JList<String>();//联想
-	private JScrollPane listScroller = new JScrollPane(list);
 	
-	private JPanel p0 = new JPanel();//frame上第一层面板
-	private JPanel p3 = new JPanel();//定义综合面板
+	private JPanel p0 = new JPanel();//底层图片面板
+	private JPanel p3 = new JPanel();
 	
-	/*UI构造方法*/
 	public UI(){
 		Border lineBorder = new LineBorder(Color.GRAY, 1);//全局边界线
-		
 		/*设置frame布局*/
 		setLayout(new BorderLayout());//frame layout
 		
-		/*设置背景图片，将frame转换成panel，加入图片后，再在frame上覆盖面板以达成背景图片设置的目的*/
+		//设置背景图片
 		JLabel backImage = new JLabel(icon);
-		backImage.setBounds(0, 0, icon.getIconWidth(),icon.getIconHeight());//设置图片大小
-		((JPanel)this.getContentPane()).setOpaque(false);//获取frame的面板，将其转换成JPanel
-		this.getLayeredPane().setLayout(null);//设置无布局方式
-		this.getLayeredPane().add(backImage, new Integer(Integer.MIN_VALUE));//加入图片
-		
-		/*在背景frame上添加第一层面板p0*/
+		backImage.setBounds(0, 0, icon.getIconWidth(),icon.getIconHeight());
+		((JPanel)this.getContentPane()).setOpaque(false);
+		this.getLayeredPane().setLayout(null);
+		this.getLayeredPane().add(backImage, new Integer(Integer.MIN_VALUE));
 		Container c = getContentPane(); //获取JFrame面板
-		c.add(p0,BorderLayout.CENTER);//
-		p0.setOpaque(false);//设置p0为透明，
+		p0.setOpaque(false);
+		p3.setLayout(new BorderLayout());
+		p3.setOpaque(false);
+		p1.setOpaque(false);
+		p2.setOpaque(false);
+		c.add(p0,BorderLayout.CENTER);
 		p0.add(p3);
 		
-		/*设置顶部输入框面板p1*/
-		//属性设置
+		//设置顶部输入框
 		p1.setLayout(new FlowLayout(FlowLayout.LEFT,25,20));
 		jtfInput.setFont(new Font("Serif", 0, 25));
 		jlb.setFont(new Font("Serif", 0, 18));
+		jlb.setIcon(wordIcon);
+		jbtSearch.addActionListener(new SearchListener());//search button 
+		jbtSearch.setIcon(searchIcon);
 		jbtSearch.setPreferredSize(new Dimension(100,32));
 		jbtSearch.setToolTipText("press it to search");
-		p1.setOpaque(false);//透明化
-		
-		jbtSearch.addActionListener(new SearchListener());//为search button添加监听 
-		changeListWithInput();//文本框添加监听器，有改动时自动更新联想框
-		
-		jbtSearch.setIcon(searchIcon);
-		jlb.setIcon(wordIcon);
-		
+		changeListWithInput();
 		p1.add(jlb);
 		p1.add(jtfInput);
 		p1.add(jbtSearch);
+		p3.add(p1,BorderLayout.NORTH);//
 		
-		/*设置左侧联想框滑动条面板listScroller，*/	
-		//添加list组件表示联想框
+		//设置左侧联想框
+		p2.setLayout(new BorderLayout());
 		list = new JList<String>(MyWord.getWordList());//init list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	
-		list.setFont(new Font("Arial", Font.PLAIN, 19));
-		
-		//为list组件添加监听器，在鼠标点击联想框时会执行相应函数
 		list.addListSelectionListener(new listSelectionListener());
-		
-		//定义带有滑动条的面板listScroller，将list组件添加上去
-		listScroller = new JScrollPane(list);
+		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(180,630));
-		
+		list.setFont(new Font("Arial", Font.PLAIN, 19));
 		//设置联想框透明
 		listScroller.setOpaque(false);
 		listScroller.getViewport().setOpaque(false);
 		list.setOpaque(false);
 		((JLabel)list.getCellRenderer()).setOpaque(false);
+		p3.add(listScroller, BorderLayout.WEST);//
 		
-		/*设置中间显示框的属性*/
+		//中间显示框
 		display.setBorder(lineBorder);
 		display.setFont(new Font("Serif", 0, 30));
-		display.setLineWrap(true);//自动换行
-		display.setOpaque(false);//透明化
-		display.setEditable(false);//不可编辑
-		
-		/*设置面板综合p3*/
-		p3.setLayout(new BorderLayout());
-		p3.setOpaque(false);
-		p3.add(p1,BorderLayout.NORTH);//
-		p3.add(listScroller, BorderLayout.WEST);//
+		display.setLineWrap(true);
+		display.setOpaque(false);
+		display.setEditable(false);
 		p3.add(display,BorderLayout.CENTER);//
 				
-		//list组件的鼠标响应监听方法
+		//jlist mouse click event
 		list.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -114,12 +100,10 @@ public class UI extends JFrame{
         });
 	}
 	
-	/*刷新整个联想区*/
 	public void refreshList(String[] tempWordList){
 		list.setListData(tempWordList);
 	}
 	
-	/*搜索按钮监听方法实现*/
 	class SearchListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO 自动生成的方法存根
@@ -133,7 +117,6 @@ public class UI extends JFrame{
 		}
 	}
 	
-	/*list联想区鼠标选择方法实现*/
 	class listSelectionListener implements ListSelectionListener{
 
 		public void valueChanged(ListSelectionEvent arg0) {
@@ -148,7 +131,6 @@ public class UI extends JFrame{
 		}
 	}
 	
-	/*输入框文本改动响应实现*/
     public void changeListWithInput(){
     	jtfInput.getDocument().addDocumentListener(new DocumentListener(){
 

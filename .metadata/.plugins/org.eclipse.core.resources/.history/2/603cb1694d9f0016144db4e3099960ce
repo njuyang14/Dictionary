@@ -22,12 +22,13 @@ public class UI extends JFrame{
 	private JTextArea jtfInput = new JTextArea(1,22);//输入栏	
 	/*定义显示框*/
 	private JTextArea display = new JTextArea();
-	/*定义联想区面板listScroller*/
+	/*定义联想区面板p2*/
+	//private JPanel p2 = new JPanel();//联想panel
 	private JList<String> list = new JList<String>();//联想
 	private JScrollPane listScroller = new JScrollPane(list);
 	
 	private JPanel p0 = new JPanel();//frame上第一层面板
-	private JPanel p3 = new JPanel();//定义综合面板
+	private JPanel p3 = new JPanel();
 	
 	/*UI构造方法*/
 	public UI(){
@@ -87,6 +88,7 @@ public class UI extends JFrame{
 		list.setOpaque(false);
 		((JLabel)list.getCellRenderer()).setOpaque(false);
 		
+		
 		/*设置中间显示框的属性*/
 		display.setBorder(lineBorder);
 		display.setFont(new Font("Serif", 0, 30));
@@ -97,11 +99,12 @@ public class UI extends JFrame{
 		/*设置面板综合p3*/
 		p3.setLayout(new BorderLayout());
 		p3.setOpaque(false);
+		
 		p3.add(p1,BorderLayout.NORTH);//
 		p3.add(listScroller, BorderLayout.WEST);//
 		p3.add(display,BorderLayout.CENTER);//
 				
-		//list组件的鼠标响应监听方法
+		//jlist mouse click event
 		list.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -114,12 +117,10 @@ public class UI extends JFrame{
         });
 	}
 	
-	/*刷新整个联想区*/
 	public void refreshList(String[] tempWordList){
 		list.setListData(tempWordList);
 	}
 	
-	/*搜索按钮监听方法实现*/
 	class SearchListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO 自动生成的方法存根
@@ -133,7 +134,6 @@ public class UI extends JFrame{
 		}
 	}
 	
-	/*list联想区鼠标选择方法实现*/
 	class listSelectionListener implements ListSelectionListener{
 
 		public void valueChanged(ListSelectionEvent arg0) {
@@ -148,7 +148,6 @@ public class UI extends JFrame{
 		}
 	}
 	
-	/*输入框文本改动响应实现*/
     public void changeListWithInput(){
     	jtfInput.getDocument().addDocumentListener(new DocumentListener(){
 
